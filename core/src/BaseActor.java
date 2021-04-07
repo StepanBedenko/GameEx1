@@ -76,6 +76,8 @@ public class BaseActor extends Actor {
     public void setSpeed(float speed){
         if(velocityVec.len() == 0)
             velocityVec.set(speed,0);
+        else
+            velocityVec.setLength(speed);
     }
 
     public float getSpeed(){
