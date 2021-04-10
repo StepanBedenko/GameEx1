@@ -3,8 +3,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Starfish extends BaseActor{
+    public boolean collected;
+
     public Starfish(float x, float y, Stage s){
         super(x,y,s);
+        collected = false;
 
         loadTexture("starfish.png");
 
@@ -13,5 +16,16 @@ public class Starfish extends BaseActor{
         this.addAction(Actions.forever(spin));
 
         setBoundaryPolygon(8);
+    }
+
+    public void collect(){
+        collected = true;
+        clearActions();
+        addAction(Actions.fadeOut(1));
+        addAction(Actions.after(Actions.removeActor()));
+    }
+
+    public boolean isCollected(){
+        return collected;
     }
 }

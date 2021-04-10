@@ -1,11 +1,4 @@
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class StarfishCollector extends GameBeta {
     private Turtle turtle;
@@ -25,10 +18,21 @@ public class StarfishCollector extends GameBeta {
         turtle = new Turtle(20,20,mainStage);
     }
 
-    public void update(float dt)
-    {
+    public void update(float dt){
+            if(turtle.overlaps(starfish) && !starfish.isCollected()) {
+                starfish.collect();
 
+                Whirlpool whirl = new Whirlpool(0,0,mainStage);
+                whirl.centerAtActor(starfish);
+                whirl.setOpacity(0.25f);
 
+                BaseActor youWinMessage = new BaseActor(0,0,mainStage);
+                youWinMessage.loadTexture("you-win.png");
+                youWinMessage.centerAtPosition(400,300);
+                youWinMessage.setOpacity(0);
+                youWinMessage.addAction(Actions.delay(1));
+                youWinMessage.addAction(Actions.after(Actions.fadeIn(1)));
+            }
     }
 
 }
