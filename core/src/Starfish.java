@@ -11,5 +11,7 @@ public class Starfish extends BaseActor{
         Action spin = Actions.rotateBy(30,1);
 
         this.addAction(Actions.forever(spin));
+
+        setBoundaryPolygon(8);
     }
 }

@@ -14,6 +14,7 @@ public class Turtle extends BaseActor{
                         "turtle-4.png", "turtle-5.png", "turtle-6.png"};
 
         loadAnimationFromFiles(fileNames, 0.1f, true);
+        setBoundaryPolygon(8);
     }
 
     public void act(float dt){
