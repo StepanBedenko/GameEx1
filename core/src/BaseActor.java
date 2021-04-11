@@ -4,13 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 
 public class BaseActor extends Actor {
@@ -23,6 +22,7 @@ public class BaseActor extends Actor {
     private float maxSpeed;
     private float deceleration;
     private Polygon boundaryPolygon;
+    private static Rectangle worldBounds;
 
     public BaseActor(float x, float y, Stage s){
         super();
@@ -36,6 +36,65 @@ public class BaseActor extends Actor {
         acceleration = 0;
         maxSpeed = 1000;
         deceleration = 0;
+    }
+
+    public void boundToWorld(){
+        if(getX() < 0)
+            setX(0);
+        if(getX() + getWidth() > worldBounds.width)
+            setX(worldBounds.width - getWidth());
+        if(getY() < 0)
+            setY(0);
+        if(getY() + getHeight() > worldBounds.height)
+            setY(worldBounds.height - getHeight());
+
+    }
+
+    public static void setWorldBounds(BaseActor ba){
+        setWorldBounds(ba.getWidth(),ba.getHeight());
+    }
+
+    public static void setWorldBounds(float width, float height){
+        worldBounds = new Rectangle(0,0,width,height);
+    }
+
+    public static int count(Stage stage, String className){
+        return getList(stage, className).size();
+    }
+
+    public static ArrayList<BaseActor> getList(Stage stage, String className){
+        ArrayList<BaseActor> list = new ArrayList<>();
+
+        Class theClass = null;
+
+        try{
+            theClass = Class.forName(className);
+        }catch(Exception error){
+            error.printStackTrace();
+        }
+
+        for(Actor a : stage.getActors()){
+            if(theClass.isInstance(a))
+                list.add((BaseActor)a);
+        }
+        return list;
+    }
+
+    public Vector2 preventOverlap(BaseActor other){
+        Polygon poly1 = this.getBoundaryPolygon();
+        Polygon poly2 = other.getBoundaryPolygon();
+
+        if(!poly1.getBoundingRectangle().overlaps((poly2.getBoundingRectangle())))
+            return null;
+
+        Intersector.MinimumTranslationVector mtv = new Intersector.MinimumTranslationVector();
+        boolean polygonOverlap = Intersector.overlapConvexPolygons(poly1,poly2,mtv);
+
+        if(!polygonOverlap)
+            return null;
+
+        this.moveBy(mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth);
+        return mtv.normal;
     }
 
     public void setOpacity(float opacity){
