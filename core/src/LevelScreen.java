@@ -1,12 +1,10 @@
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-public class StarfishCollector extends GameBeta {
+public class LevelScreen extends BaseScreen{
     private Turtle turtle;
-
     private boolean win;
 
-    public void initialize()
-    {
+    public void initialize(){
         BaseActor ocean = new BaseActor(0,0,mainStage);
         ocean.loadTexture("water-border.jpg");
         ocean.setSize(1200,900);
@@ -57,5 +55,3 @@ public class StarfishCollector extends GameBeta {
             }
         }
     }
-
-

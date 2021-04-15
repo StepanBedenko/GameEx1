@@ -1,4 +1,5 @@
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,18 @@ public class BaseActor extends Actor {
         acceleration = 0;
         maxSpeed = 1000;
         deceleration = 0;
+    }
+
+    public void alignCamera(){
+        Camera cam = this.getStage().getCamera();
+        Viewport v = this.getStage().getViewport();
+
+        cam.position.set(this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0);
+        cam.position.x = MathUtils.clamp(cam.position.x,
+                cam.viewportWidth/2, worldBounds.width - cam.viewportWidth/2);
+        cam.position.y = MathUtils.clamp(cam.position.y,
+                cam.viewportHeight/2, worldBounds.height - cam.viewportHeight/2);
+        cam.update();
     }
 
     public void boundToWorld(){
