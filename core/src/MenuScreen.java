@@ -1,3 +1,6 @@
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+
 public class MenuScreen extends BaseScreen {
     public void initialize(){
         BaseActor ocean = new BaseActor(0,0,mainStage);
@@ -7,7 +10,7 @@ public class MenuScreen extends BaseScreen {
         BaseActor title = new BaseActor(0,0,mainStage);
         title.loadTexture("starfish-collector.png");
         title.centerAtPosition(400,300);
-        title.moveBy(0,-100);
+        title.moveBy(0,100);
 
         BaseActor start = new BaseActor(0,0,mainStage);
         start.loadTexture("message-start.png");
@@ -17,6 +20,7 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public void update(float dt) {
-
+        if(Gdx.input.isKeyPressed( Input.Keys.S) )
+          StarfishGame.setActiveScreen( new LevelScreen() );
     }
 }

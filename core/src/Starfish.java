@@ -1,6 +1,7 @@
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 
 public class Starfish extends BaseActor{
     public boolean collected;
@@ -17,6 +18,7 @@ public class Starfish extends BaseActor{
 
         setBoundaryPolygon(8);
     }
+
 
     public void collect(){
         collected = true;

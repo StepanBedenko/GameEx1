@@ -3,7 +3,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		Game game = new StarfishCollector();
-		LwjglApplication launcher = new LwjglApplication(game, "Starfish Collector", 800,600);
+		Game myGame = new StarfishGame();
+		LwjglApplication launcher =
+				new LwjglApplication(myGame, "Starfish Collector", 800,600);
 	}
 }
