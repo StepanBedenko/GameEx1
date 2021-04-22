@@ -10,6 +10,8 @@ public class LevelScreen extends BaseScreen{
         ocean.setSize(1200,900);
         BaseActor.setWorldBounds(ocean);
 
+        new Shark(200,200,mainStage);
+
         new Starfish(400,400,mainStage);
         new Starfish(500,100,mainStage);
         new Starfish(100,450,mainStage);
