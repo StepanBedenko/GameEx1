@@ -1,10 +1,45 @@
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class LevelScreen extends BaseScreen{
     private Turtle turtle;
     private boolean win;
+    private Label starfishLabel;
 
     public void initialize(){
+        Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+
+        Texture buttonTex = new Texture(Gdx.files.internal("undo.png"));
+        TextureRegion buttonRegion = new TextureRegion(buttonTex);
+        buttonStyle.up = new TextureRegionDrawable(buttonRegion);
+
+        Button restartButton = new Button(buttonStyle);
+        restartButton.setColor(Color.CYAN);
+
+        restartButton.addListener(
+                (Event e) ->
+                {
+                    if( !(e instanceof InputEvent) ||
+                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown) )
+                        return false;
+
+                    StarfishGame.setActiveScreen(new LevelScreen());
+                    return false;
+                }
+    );
+
+        starfishLabel =
+                new Label("Starfish left:", BaseGame.labelStyle);
+        starfishLabel.setColor(Color.CYAN);
+
         BaseActor ocean = new BaseActor(0,0,mainStage);
         ocean.loadTexture("water-border.jpg");
         ocean.setSize(1200,900);
@@ -25,9 +60,17 @@ public class LevelScreen extends BaseScreen{
         turtle = new Turtle(20,20,mainStage);
 
         win = false;
+
+        uiTable.pad(10);
+        uiTable.add(starfishLabel).top();
+        uiTable.add().expandX().expandY();
+        uiTable.add(restartButton).top();
     }
 
     public void update(float dt){
+        starfishLabel.setText("Starfish left: " +
+                BaseActor.count(mainStage,"Starfish"));
+
         for(BaseActor rockActor : BaseActor.getList(mainStage, "Rock")){
             turtle.preventOverlap(rockActor);
         }
