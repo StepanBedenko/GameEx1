@@ -6,7 +6,9 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -57,6 +59,25 @@ public class TilemapActor extends Actor {
         batch.end();
         tiledMapRenderer.render();
         batch.begin();
+    }
+
+    public ArrayList<MapObject> getTileList(String propertyName){
+        ArrayList<MapObject> list = new ArrayList<>();
+
+        for(MapLayer layer : tiledMap.getLayers()){
+            for(MapObject obj : layer.getObjects()){
+                if(!(obj instanceof TiledMapTileMapObject))
+                    continue;
+
+                MapProperties props = obj.getProperties();
+
+                TiledMapTileMapObject tmtmo = (TiledMapTileMapObject)obj;
+                TiledMapTile t = tmtmo.getTile();
+                MapProperties defaultProps = t.getProperties();
+
+                //TODO continue the code
+            }
+        }
     }
 
     public ArrayList<MapObject> getRectangleList(String propertyName){
